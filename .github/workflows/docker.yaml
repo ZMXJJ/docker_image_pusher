@@ -55,9 +55,13 @@ jobs:
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Build and push image Aliyun
+    - name: Login to Aliyun Registry
       run: |
-        docker login -u $ALIYUN_REGISTRY_USER --password-stdin $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+        echo "${{ env.ALIYUN_REGISTRY_PASSWORD }}" | docker login -u "${{ env.ALIYUN_REGISTRY_USER }}" --password-stdin "${{ env.ALIYUN_REGISTRY }}"
+      env:
+        ALIYUN_REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
+        ALIYUN_REGISTRY_USER: ${{ secrets.ALIYUN_REGISTRY_USER }}
+        ALIYUN_REGISTRY_PASSWORD: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
         # 数据预处理,判断镜像是否重名
         declare -A duplicate_images
         declare -A temp_map
