@@ -1,2 +1,1 @@
-mongo
-redis
+python:3.9-slim
